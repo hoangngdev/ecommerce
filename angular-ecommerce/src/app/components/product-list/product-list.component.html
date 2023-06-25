@@ -8,13 +8,17 @@
 
                     <div class="product-box">
 
-                        <a routerLink="/products/{{ tempProduct.id }}">
-                            <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
-                        </a>
+                        <div>
+                            <a routerLink="/product/{{ tempProduct.id }}">
+                                <img src="{{ tempProduct.imageUrl }}" class="img-responsive">
+                            </a>
+                        </div>
 
-                        <a routerLink="/products/{{ tempProduct.id }}">
-                            <h1>{{ tempProduct.name }}</h1>
-                        </a>
+                        <div>
+                            <a routerLink="/product/{{ tempProduct.id }}">
+                                <h1>{{ tempProduct.name }}</h1>
+                            </a>
+                        </div>
 
                         <div class="price">{{ tempProduct.unitPrice | currency:'USD' }}</div>
                         <a href="#" class="primary-btn">Add to cart</a>
