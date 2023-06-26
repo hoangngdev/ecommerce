@@ -3,6 +3,8 @@ import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { Page } from 'src/app/common/page';
+import { CartService } from 'src/app/services/cart.service';
+import { CartItem } from 'src/app/common/cart-item';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +17,10 @@ export class ProductListComponent implements OnInit {
   page: Page = new Page();
   previousCategoryId: number = Number(null);
 
-  constructor(private productService: ProductService, private route: ActivatedRoute) {
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService,
+    private route: ActivatedRoute) {
 
   }
 
@@ -55,18 +60,23 @@ export class ProductListComponent implements OnInit {
     this.productService.getProductListPaginate(this.page.pageNumber - 1, this.page.pageSize, currentCategoryId).subscribe(this.processResult())
   }
 
-  processResult() {
+  updatePageSize(pageSize: string) {
+    this.page.pageSize = +pageSize;
+    this.page.pageNumber = 1;
+    this.listProducts();
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart(new CartItem(product));
+  }
+
+  // Private methods
+  private processResult() {
     return (data: any) => {
       this.products = data._embedded.products;
       this.page.pageNumber = data.page.number + 1;
       this.page.pageSize = data.page.size;
       this.page.totalElement = data.page.totalElements;
     };
-  }
-
-  updatePageSize(pageSize: string) {
-    this.page.pageSize = +pageSize;
-    this.page.pageNumber = 1;
-    this.listProducts();
   }
 }
