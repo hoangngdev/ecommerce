@@ -32,6 +32,28 @@
                 </div>
 
             </div>
+
+            <!-- begin footer-->
+            <div class="footer-pagination">
+                <div class="row">
+                    <div class="col-md-6"></div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-9" style="padding-left: 30%">
+
+                                <ngb-pagination [(page)]="page.pageNumber" [pageSize]="page.pageSize"
+                                    [collectionSize]="page.totalElement" (pageChange)="listProducts()">
+
+                                </ngb-pagination>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end footer-->
         </div>
     </div>
 </div>

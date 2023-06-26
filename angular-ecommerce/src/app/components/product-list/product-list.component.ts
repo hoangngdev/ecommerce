@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 import { ActivatedRoute } from '@angular/router';
+import { Page } from 'src/app/common/page';
 
 @Component({
   selector: 'app-product-list',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
+  page: Page = new Page();
 
   constructor(private productService: ProductService, private route: ActivatedRoute) {
 
@@ -43,10 +45,14 @@ export class ProductListComponent implements OnInit {
       currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     }
 
+    console.log('Current currentCategoryId ' + currentCategoryId + this.route.snapshot.paramMap.get('id') + this.route.snapshot.paramMap.has('id'));
     // now get the products for the given category id
-    this.productService.getProductList(currentCategoryId).subscribe(
+    this.productService.getProductListPaginate(this.page.pageNumber - 1, this.page.pageSize, currentCategoryId).subscribe(
       data => {
-        this.products = data;
+        this.products = data._embedded.products;
+        this.page.pageNumber = data.page.number + 1;
+        this.page.pageSize = data.page.size;
+        this.page.totalElement = data.page.totalElements;
       }
     )
   }
