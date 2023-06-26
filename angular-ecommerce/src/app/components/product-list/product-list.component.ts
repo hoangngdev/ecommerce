@@ -30,11 +30,7 @@ export class ProductListComponent implements OnInit {
 
   handleSearchProducts() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
-    this.productService.searchProducts(keyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.productService.searchProductsPaginate(this.page.pageNumber - 1, this.page.pageSize, keyword).subscribe(this.processResult())
   }
 
   handleListProducts() {
@@ -47,14 +43,16 @@ export class ProductListComponent implements OnInit {
 
     console.log('Current currentCategoryId ' + currentCategoryId + this.route.snapshot.paramMap.get('id') + this.route.snapshot.paramMap.has('id'));
     // now get the products for the given category id
-    this.productService.getProductListPaginate(this.page.pageNumber - 1, this.page.pageSize, currentCategoryId).subscribe(
-      data => {
-        this.products = data._embedded.products;
-        this.page.pageNumber = data.page.number + 1;
-        this.page.pageSize = data.page.size;
-        this.page.totalElement = data.page.totalElements;
-      }
-    )
+    this.productService.getProductListPaginate(this.page.pageNumber - 1, this.page.pageSize, currentCategoryId).subscribe(this.processResult())
+  }
+
+  processResult() {
+    return (data: any) => {
+      this.products = data._embedded.products;
+      this.page.pageNumber = data.page.number + 1;
+      this.page.pageSize = data.page.size;
+      this.page.totalElement = data.page.totalElements;
+    };
   }
 
   updatePageSize(pageSize: string) {
