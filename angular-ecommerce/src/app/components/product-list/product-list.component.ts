@@ -13,6 +13,7 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   page: Page = new Page();
+  previousCategoryId: number = Number(null);
 
   constructor(private productService: ProductService, private route: ActivatedRoute) {
 
@@ -41,7 +42,15 @@ export class ProductListComponent implements OnInit {
       currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     }
 
-    console.log('Current currentCategoryId ' + currentCategoryId + this.route.snapshot.paramMap.get('id') + this.route.snapshot.paramMap.has('id'));
+    console.log(`Current currentCategoryId ${currentCategoryId} previousCategoryId ${this.previousCategoryId}`);
+
+    // if we have a different category id than previous
+    // then set thePageNumber back to 1
+    if (this.previousCategoryId != currentCategoryId) {
+      this.page.pageNumber = 1;
+    }
+    this.previousCategoryId = currentCategoryId;
+
     // now get the products for the given category id
     this.productService.getProductListPaginate(this.page.pageNumber - 1, this.page.pageSize, currentCategoryId).subscribe(this.processResult())
   }
