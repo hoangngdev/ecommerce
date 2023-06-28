@@ -23,8 +23,6 @@ export class CartDetailsComponent implements OnInit {
 
     // get a handle to the cart items
     this.cartItems = this.cartService.cartItems;
-    this.totalPrice = this.cartService.totalPrice.getValue()
-    this.totalQuantity = this.cartService.totalQuantity.getValue()
 
     // subscribe to the cart totalPrice
     this.cartService.totalPrice.subscribe(

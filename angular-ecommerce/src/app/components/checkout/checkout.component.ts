@@ -114,6 +114,19 @@ export class CheckoutComponent implements OnInit {
         this.countries = data;
       }
     );
+
+    this.subscribeCartService();
+  }
+
+  subscribeCartService() {
+    // subscribe to the cart totalPrice
+    this.cartService.totalPrice.subscribe(
+      data => this.totalPrice = data
+    );
+    // subscribe to the cart totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      data => this.totalQuantity = data
+    );
   }
 
   get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
